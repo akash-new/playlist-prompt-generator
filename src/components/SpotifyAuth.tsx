@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const CLIENT_ID = "your_client_id"; // We'll need to set this up securely
+const CLIENT_ID = "your_client_id";
 const REDIRECT_URI = window.location.origin;
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
@@ -37,17 +37,32 @@ export const SpotifyAuth = () => {
     toast.success("Logged out successfully");
   };
 
+  const handleGoogleLogin = () => {
+    // In a real implementation, this would integrate with Google OAuth
+    // For now, we'll show a toast message
+    toast.error("Google login integration coming soon!");
+  };
+
   return (
-    <div className="flex justify-center p-4">
+    <div className="flex justify-center gap-4 p-4">
       {!token ? (
-        <Button
-          className="bg-spotify-green hover:bg-spotify-green/90 text-white"
-          onClick={() =>
-            window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
-          }
-        >
-          Login with Spotify
-        </Button>
+        <>
+          <Button
+            className="bg-spotify-green hover:bg-spotify-green/90 text-white"
+            onClick={() =>
+              window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
+            }
+          >
+            Login with Spotify
+          </Button>
+          <Button
+            variant="outline"
+            className="border-spotify-green text-spotify-green hover:bg-spotify-green/10"
+            onClick={handleGoogleLogin}
+          >
+            Login with Google
+          </Button>
+        </>
       ) : (
         <Button
           variant="outline"

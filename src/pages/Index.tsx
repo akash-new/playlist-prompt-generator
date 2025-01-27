@@ -46,6 +46,10 @@ const Index = () => {
     }
   };
 
+  const handleRemoveSong = (songId: string) => {
+    setSongs((prevSongs) => prevSongs.filter((song) => song.id !== songId));
+  };
+
   return (
     <div className="min-h-screen bg-spotify-black p-8">
       <div className="max-w-4xl mx-auto">
@@ -64,6 +68,7 @@ const Index = () => {
             songs={songs}
             onCreatePlaylist={handleCreatePlaylist}
             isCreating={isCreating}
+            onRemoveSong={handleRemoveSong}
           />
         </div>
       </div>
