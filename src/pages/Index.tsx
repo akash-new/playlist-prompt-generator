@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SpotifyAuth } from "@/components/SpotifyAuth";
-import { PromptInput } from "@/components/PromptInput";
 import { SongList } from "@/components/SongList";
+import { ShareButtons } from "@/components/ShareButtons";
 import { toast } from "sonner";
 
 interface Song {
@@ -11,27 +11,8 @@ interface Song {
 }
 
 const Index = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
   const [songs, setSongs] = useState<Song[]>([]);
-
-  const handlePromptSubmit = async (prompt: string) => {
-    setIsLoading(true);
-    try {
-      // TODO: Implement AI integration to generate songs based on prompt
-      // For now, we'll use mock data
-      const mockSongs: Song[] = [
-        { id: "1", name: "Song 1", artist: "Artist 1" },
-        { id: "2", name: "Song 2", artist: "Artist 2" },
-        { id: "3", name: "Song 3", artist: "Artist 3" },
-      ];
-      setSongs(mockSongs);
-    } catch (error) {
-      toast.error("Failed to generate songs. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [isCreating, setIsCreating] = useState(false);
 
   const handleCreatePlaylist = async () => {
     setIsCreating(true);
@@ -60,17 +41,20 @@ const Index = () => {
           </p>
         </div>
         
-        <SpotifyAuth />
+        <SpotifyAuth onSongsGenerated={setSongs} />
         
-        <div className="mt-8">
-          <PromptInput onSubmit={handlePromptSubmit} isLoading={isLoading} />
-          <SongList
-            songs={songs}
-            onCreatePlaylist={handleCreatePlaylist}
-            isCreating={isCreating}
-            onRemoveSong={handleRemoveSong}
-          />
-        </div>
+        {songs.length > 0 && (
+          <div className="mt-8">
+            <SongList
+              songs={songs}
+              onCreatePlaylist={handleCreatePlaylist}
+              isCreating={isCreating}
+              onRemoveSong={handleRemoveSong}
+            />
+          </div>
+        )}
+
+        <ShareButtons />
       </div>
     </div>
   );
